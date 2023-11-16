@@ -1,0 +1,3 @@
+xx Tower로부터 Climb 900m(3000ft)를 득하고 이륙 후, xx Departure로 이양,3000ft에 level off하는 단계에서 xx Departure로부터 "Direct JH, Climb 2100m(FL 069)" 지시가 나옴. 상승하면서 "Confirm Direct JH"하는 과정에서 QFE에서 QNE로 고도계 Setting을 Miss하여 약 1500ft 더 상승 Level off함. 
+oo지역 비행 시 고도 상승지시가 애매하게 Transition Altitude 부근으로 나온다는 것을 항상 염두에 두고, 상승 Clearance를 득하면 먼저 QFE에서 QNE로 Altimeter를 Setting하고 상승하는 것이 바람직함.
+특히 , 이륙 후 Direct waypoint 지시 시 R/T가 분명치 않아 의도를 Confirm하는 과정에서 PF나 PNF 둘다 R/T에 신경을 집중하는 경향을 미리 Briefing 시 약속 동작에 포함해야 할 것임.

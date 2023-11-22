@@ -1,24 +1,31 @@
 import streamlit as st
+import ai_function
+import time
 
 # Using "with" notation
 
 report_texts = []
-file = open('./samples/sample1.txt', 'r')
-text=file.read()
-report_texts.append(text)
-file.close()
+for i in range(1,5):
+    file = open(f'./samples/sample{i}.txt', 'r')
+    text=file.read()
+    report_texts.append(text)
+    file.close()
 
 
+reports_idxs={}
+selected_option=0
 with st.sidebar:
     reports = ['객실 화장실 내 흡연으로 인한 기내 화재','비행 중 군전투기와 충돌','이륙 후 새떼 충돌로 불시착']
-    st.radio(
-    "What's your favorite movie genre",
-    [":rainbow[Comedy]", "***Drama***", "Documentary :movie_camera:"],
-    captions = ["Laugh out loud.", "Get the popcorn.", "Never stop learning."])
-    st.radio(
-    "What's your favorite movie genre",
+    r_idx=0
+    for r in reports:
+        reports_idxs[r]=r_idx
+        r_idx+=1
+    selected_option=st.radio(
+    "보고서 목록",
     reports,
-    captions = ["Laugh out loud.", "Get the popcorn.", "Never stop learning."])
+    captions = ["계기비행계획으로 마닐라를 출발, 서울을 향했다. FL370에서..",
+                "G최근 B737 Rudder 문제로 이 기종에 대한 항공기 기동속도가..",
+                "당일 기상조건은 밤이었으나 VMC로 적어도 7∼8Km 이상 시계가.."])
 
 
 
@@ -26,22 +33,33 @@ with st.sidebar:
 st.title('항공 안전 사고 보고서 내 사고 원인 추출')
 
 st.header('보고서')
+st.subheader(selected_option)
+txt = st.text_area(label='본문',value=report_texts[reports_idxs[selected_option]],height=500)
 
-txt = st.text_area(
-    "보고서 본문",
-    report_texts[0],height=300
-    )
-
-st.write(f'You wrote {len(txt)} characters.')
+st.write(f'글자수: {len(txt)} 자')
 
 if st.button('analyze'):
-    st.write(f'analyze : {txt}')
-else:
-    st.write('Goodbye')
+    phrases = txt.split()
+    keyphrases=[]
+    with st.spinner("Loading..."):
+        keyphrases = ai_function.run_model(txt)
+    keyDict = {}
+    analyze_result='<div style="background-color: #f0f2f6; border-radius: 10px; padding: 20px;">'
+    for k in keyphrases:
+        keyDict[k]=k
+    for p in phrases:
+        if p in keyDict:
+            analyze_result+=f'<span style="background-color: yellow;">{p}</span>'
+            #analyze_result+=f'**{p}** '
+        else:
+            analyze_result+=f'{p} '
+    analyze_result+="</div>"
+    st.markdown(body=analyze_result,unsafe_allow_html=True)
+st.markdown(body='<br><br>',unsafe_allow_html=True)
 
 st.header('사고 원인')
 
-tab1, tab2 = st.tabs(["List", "Plot"])
+tab1, tab2 = st.tabs(["Plot", "List"])
 
 with tab1:
     keywords=['one','two','three','four']

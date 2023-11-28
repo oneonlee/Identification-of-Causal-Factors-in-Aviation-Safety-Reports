@@ -42,23 +42,24 @@ txt = st.text_area(label='본문',value=report_texts[reports_idxs[selected_optio
 st.write(f'글자수: {len(txt)} 자')
 
 if st.button('analyze'):
-    phrases = txt.split()
+    phrases = txt.split(" ")
     all_keyphrases=[]
     keyphrases=[]
     report_text_single_list=[report_texts[reports_idxs[selected_option]]]
     with st.spinner("Loading..."):
         all_keyphrases = report_analyzer_model.inference(test_report_list=report_text_single_list)
-    keyphrases=all_keyphrases[reports_idxs[selected_option]]
-    keyDict = {}
-    analyze_result='<div style="background-color: #f0f2f6; border-radius: 10px; padding: 20px;">'
-    for k in keyphrases:
-        keyDict[k]=k
-    for p in phrases:
-        if p in keyDict:
-            analyze_result+=f'<span style="background-color: yellow;">{p}</span>'
-            #analyze_result+=f'**{p}** '
-        else:
-            analyze_result+=f'{p} '
+    keyphrases=all_keyphrases[0]
+    splitted_keyphrases=[[kp.split(" ")] for kp in keyphrases]
+    
+    analyze_result="<div>"+txt
+    
+    for key in keyphrases:
+        target=key
+        insertion_front='<span style="background-color: yellow;">'
+        insertion_back='</span>'
+        index=analyze_result.find(target)
+        if index!=-1:
+            analyze_result=analyze_result[:index]+insertion_front+target+insertion_back+analyze_result[index+len(target):]
     analyze_result+="</div>"
     st.markdown(body=analyze_result,unsafe_allow_html=True)
 st.markdown(body='<br><br>',unsafe_allow_html=True)

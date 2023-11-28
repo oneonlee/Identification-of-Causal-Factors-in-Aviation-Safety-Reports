@@ -41,7 +41,6 @@ txt = st.text_area(
 )
 
 if st.button("analyze"):
-    phrases = txt.split(" ")
     all_keyphrases = []
     keyphrases = []
     report_text_single_list = [txt]

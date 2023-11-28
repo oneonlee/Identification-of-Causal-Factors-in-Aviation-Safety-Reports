@@ -2,17 +2,13 @@ import streamlit as st
 import ai_function
 import time
 import model_loader
-import singleton
 
 # Using "with" notation
 
 
 
 # 모델 로더 객체 생성
-model = model_loader.SingletonClass()
-if st.button('예측'):
-    result = model.say_hello('hi there')
-    st.write(result)
+report_analyzer_model = model_loader.SingletonClass()
 
 
 report_texts = []
@@ -52,8 +48,9 @@ if st.button('analyze'):
     phrases = txt.split()
     all_keyphrases=[]
     keyphrases=[]
+    report_text_single_list=[report_texts[reports_idxs[selected_option]]]
     with st.spinner("Loading..."):
-        all_keyphrases = ai_function.inference(model=None,test_report_list=report_texts)
+        all_keyphrases = report_analyzer_model.inference(test_report_list=report_text_single_list)
     keyphrases=all_keyphrases[reports_idxs[selected_option]]
     keyDict = {}
     analyze_result='<div style="background-color: #f0f2f6; border-radius: 10px; padding: 20px;">'

@@ -12,8 +12,9 @@ def run_model(report):
 """
 
 
-from transformers import TFBertForTokenClassification, BertTokenizer
+from transformers import BertTokenizer
 import numpy as np
+import pandas as pd
 
 HUGGINGFACE_MODEL_PATH = "oneonlee/KoAirBERT"
 MAX_SEQ_LEN = 850
@@ -22,7 +23,6 @@ tokenizer = BertTokenizer.from_pretrained(HUGGINGFACE_MODEL_PATH)
 labels_list = ['O', 'key']
 tag_to_index = {tag: index for index, tag in enumerate(labels_list)}
 index_to_tag = {index: tag for index, tag in enumerate(labels_list)}
-tag_size = len(tag_to_index)
 
 
 def convert_examples_to_features_for_prediction(examples, max_seq_len, tokenizer,
@@ -80,13 +80,6 @@ def convert_examples_to_features_for_prediction(examples, max_seq_len, tokenizer
     label_masks = np.asarray(label_masks, dtype=np.int32)
 
     return (input_ids, attention_masks, token_type_ids), label_masks
-
-
-def process_doc(doc):
-    processed_doc = doc.strip('"').replace("\n", " ").strip()
-    processed_doc = re.sub('\s+', ' ', processed_doc)
-    
-    return processed_doc
 
 
 def ner_prediction(model, examples, max_seq_len, tokenizer, isTokenized=False):
@@ -150,12 +143,15 @@ def inference(model, test_report_list, max_seq_len=MAX_SEQ_LEN, tokenizer=tokeni
     
     return predict_keyphrases_list
 
-
+'''
 if __name__ == "__main__":
     import tensorflow as tf
+    from transformers import TFBertForTokenClassification,
     
+    HUGGINGFACE_MODEL_PATH = "oneonlee/KoAirBERT"
+
     with tf.device(f"/GPU:0"):
-        load_model = TFBertForTokenClassification.from_pretrained(HUGGINGFACE_MODEL_PATH, num_labels=tag_size, from_pt=True)
+        load_model = TFBertForTokenClassification.from_pretrained(HUGGINGFACE_MODEL_PATH, num_labels=2, from_pt=True)
         optimizer = tf.keras.optimizers.Adam(learning_rate=5e-5)
         load_model.compile(optimizer=optimizer, loss=load_model.hf_compute_loss)
         load_model.load_weights(f"{HUGGINGFACE_MODEL_PATH.replace('/', '-')}/tf_model.h5")
@@ -164,3 +160,4 @@ if __name__ == "__main__":
     result = inference(model=load_model, test_report_list=[test_doc], max_seq_len=MAX_SEQ_LEN, tokenizer=tokenizer)
 
     print(result)
+    '''

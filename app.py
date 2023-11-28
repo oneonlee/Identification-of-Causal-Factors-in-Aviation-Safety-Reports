@@ -11,7 +11,7 @@ report_analyzer_model = model_loader.SingletonClass()
 
 
 report_texts = []
-for i in range(1, 5):
+for i in range(0, 8):
     file = open(f"./samples/sample{i}.txt", "r", encoding="UTF-8")
     text = file.read()
     report_texts.append(text)
@@ -21,7 +21,15 @@ for i in range(1, 5):
 reports_idxs = {}
 selected_option = 0
 with st.sidebar:
-    reports = ["객실 화장실 내 흡연으로 인한 기내 화재", "비행 중 군전투기와 충돌", "이륙 후 새떼 충돌로 불시착"]
+    reports = ["비행 중 기내난동",
+               "지상 활주 중 기내 환자 발생으로 Ramp Return",
+               "지상 기내식 직원의 표준운영절차",
+               "운항 중 실수로 인한 일시적 통신두절",
+               "이륙 중 타이어 파열",
+               "항공기 운항 중 기내 환자 사망",
+               "항공기 납치 협박 사건",
+               "수하물 낙하 및 환자 인송으로 인한 지연",
+               ]
     r_idx = 0
     for r in reports:
         reports_idxs[r] = r_idx

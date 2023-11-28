@@ -43,7 +43,7 @@ if st.button('analyze'):
     phrases = txt.split(" ")
     all_keyphrases=[]
     keyphrases=[]
-    report_text_single_list=[report_texts[reports_idxs[selected_option]]]
+    report_text_single_list=[txt]
     with st.spinner("Loading..."):
         all_keyphrases = report_analyzer_model.inference(test_report_list=report_text_single_list)
     keyphrases=all_keyphrases[0]

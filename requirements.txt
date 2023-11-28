@@ -42,7 +42,7 @@ scipy
 sentence-transformers==2.2.2
 six==1.16.0
 smmap==5.0.1
-streamlit=1.19.0
+streamlit==1.19.0
 tenacity==8.2.3
 tensorflow-gpu==2.10.0 
 threadpoolctl==3.2.0

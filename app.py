@@ -49,6 +49,7 @@ if st.button("analyze"):
             test_report_list=report_text_single_list
         )
     keyphrases = all_keyphrases[0]
+    print("keyphrases: ", keyphrases)
 
     splitted_keyphrases = [[kp.split(" ")] for kp in keyphrases]
 
@@ -59,6 +60,9 @@ if st.button("analyze"):
         insertion_front = '<span style="background-color: yellow;">'
         insertion_back = "</span>"
         index = analyze_result.find(target)
+
+        if index != analyze_result.rfind(target):
+            continue
         if index != -1:
             analyze_result = (
                 analyze_result[:index]

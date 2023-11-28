@@ -29,10 +29,7 @@ with st.sidebar:
         r_idx+=1
     selected_option=st.radio(
     "보고서 목록",
-    reports,
-    captions = ["계기비행계획으로 마닐라를 출발, 서울을 향했다. FL370에서..",
-                "G최근 B737 Rudder 문제로 이 기종에 대한 항공기 기동속도가..",
-                "당일 기상조건은 밤이었으나 VMC로 적어도 7∼8Km 이상 시계가.."])
+    reports)
 
 
 

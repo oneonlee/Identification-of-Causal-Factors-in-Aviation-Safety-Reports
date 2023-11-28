@@ -40,7 +40,6 @@ st.subheader(selected_option)
 txt = st.text_area(label='본문',value=report_texts[reports_idxs[selected_option]],height=500,max_chars=850)
 
 if st.button('analyze'):
-    phrases = txt.split(" ")
     all_keyphrases=[]
     keyphrases=[]
     report_text_single_list=[txt]

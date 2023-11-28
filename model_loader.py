@@ -18,8 +18,7 @@ class SingletonClass:
 
     def inference(self,test_report_list, max_seq_len=MAX_SEQ_LEN):
         print(f"model name : [{self._load_model}], input text [{test_report_list}]")
-        ai_function.inference(self._load_model, test_report_list, max_seq_len=max_seq_len, tokenizer=self._tokenizer)
-        return self._load_model
+        return ai_function.inference(self._load_model, test_report_list, max_seq_len=max_seq_len, tokenizer=self._tokenizer)
 
     @staticmethod
     def init_model(cls):

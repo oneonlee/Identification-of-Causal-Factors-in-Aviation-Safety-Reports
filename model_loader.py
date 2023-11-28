@@ -5,7 +5,6 @@ from transformers import TFBertForTokenClassification, BertTokenizer
 
 class SingletonClass:
     _instance = None
-    _model = None
     _load_model = None
     _tokenizer = None
     MAX_SEQ_LEN = 850
@@ -14,18 +13,16 @@ class SingletonClass:
         if not cls._instance:
             print('loading')
             cls._instance = super().__new__(cls, *args, **kwargs)
-            cls._instance._model = 'my model'
-            cls.init_mode(cls)
-
+            cls.init_model(cls)
         return cls._instance
 
     def inference(self,test_report_list, max_seq_len=MAX_SEQ_LEN):
-        print(f"model name : [{self._model}], input text [{test_report_list}]")
-        ai_function.inference(self._model, test_report_list, max_seq_len=max_seq_len, tokenizer=self._tokenizer)
-        return self._model
+        print(f"model name : [{self._load_model}], input text [{test_report_list}]")
+        ai_function.inference(self._load_model, test_report_list, max_seq_len=max_seq_len, tokenizer=self._tokenizer)
+        return self._load_model
 
     @staticmethod
-    def init_mode(cls):
+    def init_model(cls):
         HUGGINGFACE_MODEL_PATH = "oneonlee/KoAirBERT"
         cls._instance._tokenizer = BertTokenizer.from_pretrained(HUGGINGFACE_MODEL_PATH)
 

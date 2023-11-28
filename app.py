@@ -39,8 +39,6 @@ st.header('보고서')
 st.subheader(selected_option)
 txt = st.text_area(label='본문',value=report_texts[reports_idxs[selected_option]],height=500,max_chars=850)
 
-st.write(f'글자수: {len(txt)} 자')
-
 if st.button('analyze'):
     phrases = txt.split(" ")
     all_keyphrases=[]

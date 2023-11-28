@@ -29,7 +29,6 @@ with st.sidebar:
 
 
 
-
 st.title('항공 안전 사고 보고서 내 사고 원인 추출')
 
 st.header('보고서')
@@ -40,9 +39,11 @@ st.write(f'글자수: {len(txt)} 자')
 
 if st.button('analyze'):
     phrases = txt.split()
+    all_keyphrases=[]
     keyphrases=[]
     with st.spinner("Loading..."):
-        keyphrases = ai_function.run_model(txt)
+        all_keyphrases = ai_function.inference(model=None,test_report_list=report_texts)
+    keyphrases=all_keyphrases[reports_idxs[selected_option]]
     keyDict = {}
     analyze_result='<div style="background-color: #f0f2f6; border-radius: 10px; padding: 20px;">'
     for k in keyphrases:

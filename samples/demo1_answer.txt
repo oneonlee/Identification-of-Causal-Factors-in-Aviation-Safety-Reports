@@ -1,0 +1,1 @@
+"회항 과정에서 Flight Plan Route를 입력시 KM ATS CG구간이 Route Page에는 KM Direct CG로 입력되는 것이", "Clearance를 받는 문제, 회사에 회황상황보고 등 바쁜 과정에서 "

@@ -13,7 +13,7 @@ report_analyzer_model = model_loader.SingletonClass()
 
 report_texts = []
 for i in range(1,5):
-    file = open(f'./samples/sample{i}.txt', 'r')
+    file = open(f'./samples/sample{i}.txt', 'r',encoding='UTF-8')
     text=file.read()
     report_texts.append(text)
     file.close()

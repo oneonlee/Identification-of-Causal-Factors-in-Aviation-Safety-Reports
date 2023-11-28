@@ -1,8 +1,19 @@
 import streamlit as st
 import ai_function
 import time
+import model_loader
+import singleton
 
 # Using "with" notation
+
+
+
+# 모델 로더 객체 생성
+model = model_loader.SingletonClass()
+if st.button('예측'):
+    result = model.say_hello('hi there')
+    st.write(result)
+
 
 report_texts = []
 for i in range(1,5):
@@ -33,7 +44,7 @@ st.title('항공 안전 사고 보고서 내 사고 원인 추출')
 
 st.header('보고서')
 st.subheader(selected_option)
-txt = st.text_area(label='본문',value=report_texts[reports_idxs[selected_option]],height=500)
+txt = st.text_area(label='본문',value=report_texts[reports_idxs[selected_option]],height=500,max_chars=850)
 
 st.write(f'글자수: {len(txt)} 자')
 

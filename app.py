@@ -83,13 +83,13 @@ st.markdown(body="<br><br>", unsafe_allow_html=True)
 
 st.header("사고 원인")
 
-tab1, tab2 = st.tabs(["Plot_2d", "Plot_3d"])
+tab1, tab2 = st.tabs(["3D t-SNE", "2D t-SNE"])
 
 with tab1:
     st.plotly_chart(
-        plotly_test.plot_fig(keyphrases, txt), use_container_width=True, theme=None
+        plotly_test.plot_fig_3d(keyphrases, txt), use_container_width=True, theme=None
     )
 with tab2:
     st.plotly_chart(
-        plotly_test.plot_fig_3d(keyphrases, txt), use_container_width=True, theme=None
+        plotly_test.plot_fig(keyphrases, txt), use_container_width=True, theme=None
     )

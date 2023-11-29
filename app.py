@@ -2,7 +2,12 @@ import streamlit as st
 import model_loader
 import plotly_test
 
-# Using "with" notation
+st.set_page_config(
+    page_title="항공 안전 보고서 내 원인 요인 식별",
+    page_icon="✈️",
+    # layout="wide",
+    initial_sidebar_state="expanded",
+)
 
 
 # 모델 로더 객체 생성

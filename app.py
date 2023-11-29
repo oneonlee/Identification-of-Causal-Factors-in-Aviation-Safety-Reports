@@ -37,7 +37,7 @@ with st.sidebar:
     selected_option = st.radio("보고서 목록", reports)
 
 
-st.title("항공 안전 사고 보고서 내 사고 원인 추출")
+st.title("항공 안전 보고서 내 원인 요인 식별")
 
 st.header("보고서")
 st.subheader(selected_option)

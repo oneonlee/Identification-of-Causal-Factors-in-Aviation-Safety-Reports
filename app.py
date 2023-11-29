@@ -1,6 +1,4 @@
 import streamlit as st
-import ai_function
-import time
 import model_loader
 import plotly_test
 
@@ -22,15 +20,16 @@ for i in range(0, 8):
 reports_idxs = {}
 selected_option = 0
 with st.sidebar:
-    reports = ["비행 중 기내난동",
-               "지상 활주 중 기내 환자 발생으로 Ramp Return",
-               "지상 기내식 직원의 표준운영절차",
-               "운항 중 실수로 인한 일시적 통신두절",
-               "이륙 중 타이어 파열",
-               "항공기 운항 중 기내 환자 사망",
-               "항공기 납치 협박 사건",
-               "수하물 낙하 및 환자 인송으로 인한 지연",
-               ]
+    reports = [
+        "비행 중 기내난동",
+        "지상 활주 중 기내 환자 발생으로 Ramp Return",
+        "지상 기내식 직원의 표준운영절차",
+        "운항 중 실수로 인한 일시적 통신두절",
+        "이륙 중 타이어 파열",
+        "항공기 운항 중 기내 환자 사망",
+        "항공기 납치 협박 사건",
+        "수하물 낙하 및 환자 인송으로 인한 지연",
+    ]
     r_idx = 0
     for r in reports:
         reports_idxs[r] = r_idx
@@ -89,6 +88,10 @@ st.header("사고 원인")
 tab1, tab2 = st.tabs(["Plot_2d", "Plot_3d"])
 
 with tab1:
-    st.plotly_chart(plotly_test.plot_fig(keyphrases, txt), use_container_width=True, theme=None)
+    st.plotly_chart(
+        plotly_test.plot_fig(keyphrases, txt), use_container_width=True, theme=None
+    )
 with tab2:
-    st.plotly_chart(plotly_test.plot_fig_3d(keyphrases, txt), use_container_width=True, theme=None)
+    st.plotly_chart(
+        plotly_test.plot_fig_3d(keyphrases, txt), use_container_width=True, theme=None
+    )

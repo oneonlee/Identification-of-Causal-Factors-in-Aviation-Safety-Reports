@@ -41,42 +41,46 @@ txt = st.text_area(label='본문',value=report_texts[reports_idxs[selected_optio
 
 st.write(f'글자수: {len(txt)} 자')
 
+keyphrases = []
 if st.button('analyze'):
     phrases = txt.split()
     all_keyphrases = []
-    keyphrases = []
     report_text_single_list = [txt]
     print(f"report text single list type : {type(report_text_single_list)}")
     with st.spinner("Loading..."):
-        all_keyphrases = report_analyzer_model.inference(test_report_list=report_text_single_list)
-    keyphrases = all_keyphrases[reports_idxs[selected_option]]
-    keyDict = {}
-    analyze_result='<div style="background-color: #f0f2f6; border-radius: 10px; padding: 20px;">'
-    for k in keyphrases:
-        keyDict[k]=k
-    for p in phrases:
-        if p in keyDict:
-            analyze_result+=f'<span style="background-color: yellow;">{p}</span>'
-            #analyze_result+=f'**{p}** '
-        else:
-            analyze_result+=f'{p} '
-    analyze_result+="</div>"
-    st.markdown(body=analyze_result,unsafe_allow_html=True)
+        all_keyphrases = report_analyzer_model.inference(
+            test_report_list=report_text_single_list
+        )
+    keyphrases = all_keyphrases[0]
+
+    analyze_result = "<div>" + txt
+    for key in keyphrases:
+        target = key
+        insertion_front = '<span style="background-color: yellow;">'
+        insertion_back = "</span>"
+        index = analyze_result.find(target)
+
+        if index != analyze_result.rfind(target):
+            continue
+        if index != -1:
+            analyze_result = (
+                analyze_result[:index]
+                + insertion_front
+                + target
+                + insertion_back
+                + analyze_result[index + len(target) :]
+            )
+    analyze_result += "</div>"
+    st.markdown(body=analyze_result, unsafe_allow_html=True)
 st.markdown(body='<br><br>',unsafe_allow_html=True)
 
 st.header('사고 원인')
 
-tab1, tab2, tab3 = st.tabs(["List", "Plot_2d", "Plot_3d"])
-
+tab1, tab2 = st.tabs(["Plot_2d", "Plot_3d"])
 with tab1:
-    keywords=['one', 'two', 'three', 'four']
-    idx=1
-    for word in keywords:
-        st.markdown(f'{idx}. {word}')
-        idx+=1
+    with st.spinner("Loading..."):
+        st.plotly_chart(plotly_test.plot_fig(keyphrases, txt), use_container_width=True, theme=None)
 
 with tab2:
-    st.plotly_chart(plotly_test.sample_plot_fig(), use_container_width=True, theme=None)
-
-with tab3:
-    st.plotly_chart(plotly_test.sample_plot_fig_3d(), use_container_width=True, theme=None)
+    with st.spinner("Loading..."):
+        st.plotly_chart(plotly_test.plot_fig_3d(keyphrases, txt), use_container_width=True, theme=None)

@@ -20,7 +20,7 @@ class SingletonClass:
         indexes = random.sample(range(0,len(phrases)),5)
         for i in indexes:
             keyphrases.append(phrases[i])
-        return keyphrases
+        return [keyphrases]
 
     @staticmethod
     def init_model(cls):

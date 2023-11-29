@@ -2,6 +2,7 @@ import streamlit as st
 import ai_function
 import time
 import model_loader
+import plotly_test
 
 # Using "with" notation
 
@@ -48,9 +49,9 @@ txt = st.text_area(
     max_chars=850,
 )
 
+keyphrases = []
 if st.button("analyze"):
     all_keyphrases = []
-    keyphrases = []
     report_text_single_list = [txt]
     with st.spinner("Loading..."):
         all_keyphrases = report_analyzer_model.inference(
@@ -85,11 +86,9 @@ st.markdown(body="<br><br>", unsafe_allow_html=True)
 
 st.header("사고 원인")
 
-tab1, tab2 = st.tabs(["Plot", "List"])
+tab1, tab2 = st.tabs(["Plot_2d", "Plot_3d"])
 
 with tab1:
-    keywords = ["one", "two", "three", "four"]
-    idx = 1
-    for word in keywords:
-        st.markdown(f"{idx}. {word}")
-        idx += 1
+    st.plotly_chart(plotly_test.plot_fig(keyphrases, txt), use_container_width=True, theme=None)
+with tab2:
+    st.plotly_chart(plotly_test.plot_fig_3d(keyphrases, txt), use_container_width=True, theme=None)

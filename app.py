@@ -38,9 +38,7 @@ with st.sidebar:
 
 
 st.title("항공 안전 보고서 내 원인 요인 식별")
-
-st.header("보고서")
-st.subheader(selected_option)
+st.header(f"<{selected_option}>")
 txt = st.text_area(
     label="본문",
     value=report_texts[reports_idxs[selected_option]],

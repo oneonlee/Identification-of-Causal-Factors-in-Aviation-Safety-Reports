@@ -1,10 +1,13 @@
 import streamlit as st
-import ai_function
-import time
 import model_loader
 import plotly_test
 
-# Using "with" notation
+st.set_page_config(
+    page_title="항공 안전 보고서 내 원인 요인 식별",
+    page_icon="✈️",
+    # layout="wide",
+    initial_sidebar_state="expanded",
+)
 
 
 # 모델 로더 객체 생성
@@ -22,15 +25,16 @@ for i in range(0, 8):
 reports_idxs = {}
 selected_option = 0
 with st.sidebar:
-    reports = ["비행 중 기내난동",
-               "지상 활주 중 기내 환자 발생으로 Ramp Return",
-               "지상 기내식 직원의 표준운영절차",
-               "운항 중 실수로 인한 일시적 통신두절",
-               "이륙 중 타이어 파열",
-               "항공기 운항 중 기내 환자 사망",
-               "항공기 납치 협박 사건",
-               "수하물 낙하 및 환자 인송으로 인한 지연",
-               ]
+    reports = [
+        "비행 중 기내난동",
+        "지상 활주 중 기내 환자 발생으로 Ramp Return",
+        "지상 기내식 직원의 표준운영절차",
+        "운항 중 실수로 인한 일시적 통신두절",
+        "이륙 중 타이어 파열",
+        "항공기 운항 중 기내 환자 사망",
+        "항공기 납치 협박 사건",
+        "수하물 낙하 및 환자 인송으로 인한 지연",
+    ]
     r_idx = 0
     for r in reports:
         reports_idxs[r] = r_idx
@@ -38,10 +42,8 @@ with st.sidebar:
     selected_option = st.radio("보고서 목록", reports)
 
 
-st.title("항공 안전 사고 보고서 내 사고 원인 추출")
-
-st.header("보고서")
-st.subheader(selected_option)
+st.title("항공 안전 보고서 내 원인 요인 식별")
+st.header(f"<{selected_option}>")
 txt = st.text_area(
     label="본문",
     value=report_texts[reports_idxs[selected_option]],
@@ -86,7 +88,7 @@ st.markdown(body="<br><br>", unsafe_allow_html=True)
 
 st.header("사고 원인")
 
-tab1, tab2 = st.tabs(["Plot_2d", "Plot_3d"])
+tab1, tab2 = st.tabs(["3D t-SNE", "2D t-SNE"])
 
 with tab1:
     with st.spinner("Loading..."):

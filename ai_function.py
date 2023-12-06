@@ -1,17 +1,3 @@
-"""
-import random
-
-def run_model(report):
-    phrases = report.split()
-    keyphrases = []
-    indexes = random.sample(range(0,len(phrases)),5)
-    for i in indexes:
-        #print(f'{i}\'th index : {phrases[i]}')
-        keyphrases.append(phrases[i])
-    return keyphrases
-"""
-
-
 from transformers import BertTokenizer
 import numpy as np
 import pandas as pd
@@ -20,13 +6,18 @@ HUGGINGFACE_MODEL_PATH = "oneonlee/KoAirBERT"
 MAX_SEQ_LEN = 850
 tokenizer = BertTokenizer.from_pretrained(HUGGINGFACE_MODEL_PATH)
 
-labels_list = ['O', 'key']
+labels_list = ["O", "key"]
 tag_to_index = {tag: index for index, tag in enumerate(labels_list)}
 index_to_tag = {index: tag for index, tag in enumerate(labels_list)}
 
 
-def convert_examples_to_features_for_prediction(examples, max_seq_len, tokenizer,
-                                 pad_token_id_for_segment=0, pad_token_id_for_label=-100):
+def convert_examples_to_features_for_prediction(
+    examples,
+    max_seq_len,
+    tokenizer,
+    pad_token_id_for_segment=0,
+    pad_token_id_for_label=-100,
+):
     cls_token = tokenizer.cls_token
     sep_token = tokenizer.sep_token
     pad_token_id = tokenizer.pad_token_id
@@ -39,22 +30,23 @@ def convert_examples_to_features_for_prediction(examples, max_seq_len, tokenizer
         for one_word in example:
             subword_tokens = tokenizer.tokenize(one_word)
             tokens.extend(subword_tokens)
-            if len(subword_tokens)>=1:
-                label_mask.extend([0]+ [pad_token_id_for_label] * (len(subword_tokens) - 1))
-            elif len(subword_tokens)==0:
+            if len(subword_tokens) >= 1:
+                label_mask.extend(
+                    [0] + [pad_token_id_for_label] * (len(subword_tokens) - 1)
+                )
+            elif len(subword_tokens) == 0:
                 pass
 
         special_tokens_count = 2
         if len(tokens) > max_seq_len - special_tokens_count:
-            tokens = tokens[:(max_seq_len - special_tokens_count)]
-            label_mask = label_mask[:(max_seq_len - special_tokens_count)]
+            tokens = tokens[: (max_seq_len - special_tokens_count)]
+            label_mask = label_mask[: (max_seq_len - special_tokens_count)]
 
         tokens += [sep_token]
         label_mask += [pad_token_id_for_label]
 
         tokens = [cls_token] + tokens
         label_mask = [pad_token_id_for_label] + label_mask
-
 
         input_id = tokenizer.convert_tokens_to_ids(tokens)
         attention_mask = [1] * len(input_id)
@@ -64,10 +56,22 @@ def convert_examples_to_features_for_prediction(examples, max_seq_len, tokenizer
         token_type_id = [pad_token_id_for_segment] * max_seq_len
         label_mask = label_mask + ([pad_token_id_for_label] * padding_count)
 
-        assert len(input_id) == max_seq_len, "Error with input length {} vs {}".format(len(input_id), max_seq_len)
-        assert len(attention_mask) == max_seq_len, "Error with attention mask length {} vs {}".format(len(attention_mask), max_seq_len)
-        assert len(token_type_id) == max_seq_len, "Error with token type length {} vs {}".format(len(token_type_id), max_seq_len)
-        assert len(label_mask) == max_seq_len, "Error with labels length {} vs {}".format(len(label_mask), max_seq_len)
+        assert len(input_id) == max_seq_len, "Error with input length {} vs {}".format(
+            len(input_id), max_seq_len
+        )
+        assert (
+            len(attention_mask) == max_seq_len
+        ), "Error with attention mask length {} vs {}".format(
+            len(attention_mask), max_seq_len
+        )
+        assert (
+            len(token_type_id) == max_seq_len
+        ), "Error with token type length {} vs {}".format(
+            len(token_type_id), max_seq_len
+        )
+        assert (
+            len(label_mask) == max_seq_len
+        ), "Error with labels length {} vs {}".format(len(label_mask), max_seq_len)
 
         input_ids.append(input_id)
         attention_masks.append(attention_mask)
@@ -84,13 +88,17 @@ def convert_examples_to_features_for_prediction(examples, max_seq_len, tokenizer
 
 def ner_prediction(model, examples, max_seq_len, tokenizer, isTokenized=False):
     if isTokenized == False:
-        examples = [report.split(' ') for report in examples]
-        X_pred, label_masks = convert_examples_to_features_for_prediction(examples, max_seq_len=max_seq_len, tokenizer=tokenizer)
+        examples = [report.split(" ") for report in examples]
+        X_pred, label_masks = convert_examples_to_features_for_prediction(
+            examples, max_seq_len=max_seq_len, tokenizer=tokenizer
+        )
     elif isTokenized == True:
-        X_pred, label_masks = convert_examples_to_features_for_prediction(examples, max_seq_len=max_seq_len, tokenizer=tokenizer)
-    
+        X_pred, label_masks = convert_examples_to_features_for_prediction(
+            examples, max_seq_len=max_seq_len, tokenizer=tokenizer
+        )
+
     y_predicted = model.predict(X_pred)
-    y_predicted = np.argmax(y_predicted.logits, axis = 2)
+    y_predicted = np.argmax(y_predicted.logits, axis=2)
 
     pred_list = []
     result_list = []
@@ -99,7 +107,7 @@ def ner_prediction(model, examples, max_seq_len, tokenizer, isTokenized=False):
         pred_tag = []
         for label_index, pred_index in zip(label_masks[i], y_predicted[i]):
             pred_tag.append(index_to_tag[pred_index])
-            
+
         pred_list.append(pred_tag)
 
     for example, pred in zip(examples, pred_list):
@@ -136,14 +144,19 @@ def tag_to_sequence(result_list):
 
 
 def inference(model, test_report_list, max_seq_len=MAX_SEQ_LEN, tokenizer=tokenizer):
-    assert isinstance(test_report_list, list) or isinstance(test_report_list, pd.core.series.Series), f"input이 {type(test_report_list)}임"
-    
-    result_list = ner_prediction(model, test_report_list, max_seq_len=MAX_SEQ_LEN, tokenizer=tokenizer)   
+    assert isinstance(test_report_list, list) or isinstance(
+        test_report_list, pd.core.series.Series
+    ), f"input이 {type(test_report_list)}임"
+
+    result_list = ner_prediction(
+        model, test_report_list, max_seq_len=MAX_SEQ_LEN, tokenizer=tokenizer
+    )
     predict_keyphrases_list = tag_to_sequence(result_list)
-    
+
     return predict_keyphrases_list
 
-'''
+
+"""
 if __name__ == "__main__":
     import tensorflow as tf
     from transformers import TFBertForTokenClassification,
@@ -160,4 +173,4 @@ if __name__ == "__main__":
     result = inference(model=load_model, test_report_list=[test_doc], max_seq_len=MAX_SEQ_LEN, tokenizer=tokenizer)
 
     print(result)
-    '''
+    """

@@ -92,11 +92,11 @@ tab1, tab2 = st.tabs(["3D t-SNE", "2D t-SNE"])
 
 with tab1:
     with st.spinner("Loading..."):
-        graph = plotly_test.plot_fig(keyphrases, txt)
-        if graph is not None:
-            st.plotly_chart(plotly_test.plot_fig(keyphrases, txt), use_container_width=True, theme=None)
-with tab2:
-    with st.spinner("Loading..."):
         graph = plotly_test.plot_fig_3d(keyphrases, txt)
         if graph is not None:
             st.plotly_chart(plotly_test.plot_fig_3d(keyphrases, txt), use_container_width=True, theme=None)
+with tab2:
+    with st.spinner("Loading..."):
+        graph = plotly_test.plot_fig(keyphrases, txt)
+        if graph is not None:
+            st.plotly_chart(plotly_test.plot_fig(keyphrases, txt), use_container_width=True, theme=None)

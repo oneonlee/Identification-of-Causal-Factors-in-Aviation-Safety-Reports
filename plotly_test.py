@@ -31,6 +31,8 @@ def make_phrase2(doc, phrase_list=[]):
 
 
 def plot_fig(keyphrases, doc):
+  if len(keyphrases)==0:
+    return None
   phrases = make_phrase2(doc)
   phrases = list(phrases)
   colors = []
@@ -66,6 +68,8 @@ def plot_fig(keyphrases, doc):
 
 
 def plot_fig_3d(keyphrases, doc):
+  if len(keyphrases)==0:
+    return None
   phrases = make_phrase2(doc)
   phrases = list(phrases)
   colors = []

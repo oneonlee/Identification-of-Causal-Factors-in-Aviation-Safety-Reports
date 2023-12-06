@@ -89,6 +89,12 @@ st.header("사고 원인")
 tab1, tab2 = st.tabs(["Plot_2d", "Plot_3d"])
 
 with tab1:
-    st.plotly_chart(plotly_test.plot_fig(keyphrases, txt), use_container_width=True, theme=None)
+    with st.spinner("Loading..."):
+        graph = plotly_test.plot_fig(keyphrases, txt)
+        if graph is not None:
+            st.plotly_chart(plotly_test.plot_fig(keyphrases, txt), use_container_width=True, theme=None)
 with tab2:
-    st.plotly_chart(plotly_test.plot_fig_3d(keyphrases, txt), use_container_width=True, theme=None)
+    with st.spinner("Loading..."):
+        graph = plotly_test.plot_fig_3d(keyphrases, txt)
+        if graph is not None:
+            st.plotly_chart(plotly_test.plot_fig_3d(keyphrases, txt), use_container_width=True, theme=None)

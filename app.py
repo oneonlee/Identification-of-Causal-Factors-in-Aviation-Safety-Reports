@@ -55,7 +55,7 @@ cluster_size = st.slider("Select Cluster Size", value=5, min_value=3, max_value=
 st.write("cluster size : ", cluster_size)
 
 keyphrases = []
-if st.button("analyze"):
+if st.button("Start Analyze 🛫"):
     all_keyphrases = []
     report_text_single_list = [txt]
     with st.spinner("Loading..."):

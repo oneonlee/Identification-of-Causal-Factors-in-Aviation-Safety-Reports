@@ -37,17 +37,15 @@ st.title('항공 안전 사고 보고서 내 사고 원인 추출')
 
 st.header('보고서')
 st.subheader(selected_option)
-txt = st.text_area(label='본문',value=report_texts[reports_idxs[selected_option]],height=500,max_chars=850)
+txt = st.text_area(label='본문',value=report_texts[reports_idxs[selected_option]], height=250, max_chars=850)
 
 st.write(f'글자수: {len(txt)} 자')
-
 cluster_size = st.slider(
     "Select Cluster Size",
     value=5, min_value=3, max_value=10)
-st.write("cluster size : ", cluster_size)
 
 keyphrases = []
-if st.button('analyze'):
+if st.button('Start Analyze 🛫'):
     phrases = txt.split()
     all_keyphrases = []
     report_text_single_list = [txt]

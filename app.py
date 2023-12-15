@@ -47,13 +47,11 @@ st.header(f"<{selected_option}>")
 txt = st.text_area(
     label="본문",
     value=report_texts[reports_idxs[selected_option]],
-    height=500,
+    height=250,
     max_chars=850,
 )
 
-cluster_size = st.slider(
-    "Select Cluster Size",
-    value=5, min_value=3, max_value=10)
+cluster_size = st.slider("Select Cluster Size", value=5, min_value=3, max_value=10)
 st.write("cluster size : ", cluster_size)
 
 keyphrases = []
@@ -99,11 +97,17 @@ with tab1:
     with st.spinner("Loading..."):
         graph = plotly_test.plot_fig_3d(keyphrases, txt, cluster_size=cluster_size)
         if graph is not None:
-            st.plotly_chart(plotly_test.plot_fig_3d(keyphrases, txt, cluster_size=cluster_size),
-                            use_container_width=True, theme=None)
+            st.plotly_chart(
+                plotly_test.plot_fig_3d(keyphrases, txt, cluster_size=cluster_size),
+                use_container_width=True,
+                theme=None,
+            )
 with tab2:
     with st.spinner("Loading..."):
         graph = plotly_test.plot_fig(keyphrases, txt, cluster_size=cluster_size)
         if graph is not None:
-            st.plotly_chart(plotly_test.plot_fig(keyphrases, txt, cluster_size=cluster_size),
-                            use_container_width=True, theme=None)
+            st.plotly_chart(
+                plotly_test.plot_fig(keyphrases, txt, cluster_size=cluster_size),
+                use_container_width=True,
+                theme=None,
+            )

@@ -29,7 +29,7 @@ def tokenizer(text):
 
 def make_phrase2(doc, phrase_list=[]):
     count = CountVectorizer(
-        ngram_range=(4, 6), lowercase=False, token_pattern=None, tokenizer=tokenizer
+        ngram_range=(3, 8), lowercase=False, token_pattern=None, tokenizer=tokenizer
     ).fit([doc])
     candidates = count.get_feature_names_out()
     return candidates

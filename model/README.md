@@ -1,4 +1,7 @@
 # model
+
+항공 안전 보고서에서 원인을 추출하기 위해 개발한 모델의 학습 및 추론 코드가 담겨 있는 디렉토리
+
 1. BERT 계열 모델들을 Fine-tuning한 모델
     - KoAirBERT.ipynb
     - klue-bert-base.ipynb
